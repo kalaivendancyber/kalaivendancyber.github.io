@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalaivendan | Cyber Security Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --deep: #050a05;
+    --red: #cc0000;
+    --red-bright: #ff2020;
+    --blue: #0044cc;
+    --blue-bright: #1a8cff;
+    --blue-glow: #00bfff;
+    --white: #e8e8e8;
+    --dim: #888;
+    --card-bg: #060c12;
+    --border: #0a2a4a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── MATRIX CANVAS ── */
+  #matrix {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  /* ── LAYOUT ── */
+  .page { position: relative; z-index: 1; }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 70px 28px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .glitch-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-weight: 900;
+    color: var(--blue-bright);
+    text-shadow:
+      0 0 10px var(--blue-glow),
+      0 0 30px var(--blue),
+      2px 0 0 var(--red);
+    letter-spacing: 0.08em;
+    animation: glitch 3s infinite;
+    position: relative;
+  }
+
+  @keyframes glitch {
+    0%,95%,100% { text-shadow: 0 0 10px var(--blue-glow), 0 0 30px var(--blue), 2px 0 0 var(--red); transform: none; }
+    96% { text-shadow: -3px 0 var(--red-bright), 3px 0 var(--blue-glow); transform: skewX(-3deg); }
+    98% { text-shadow: 3px 0 var(--red-bright), -3px 0 var(--blue-glow); transform: skewX(2deg); }
+  }
+
+  .hero-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: var(--red-bright);
+    margin-top: 14px;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--blue-glow);
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+  }
+
+  .scroll-hint {
+    margin-top: 48px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    animation: blink 1.4s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── SECTION TITLES ── */
+  .sec-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--blue-bright);
+    border-left: 5px solid var(--red);
+    padding-left: 18px;
+    margin-bottom: 36px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── PROFILE CARD ── */
+  .profile-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--blue-bright), var(--red));
+  }
+
+  .avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--red));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--white);
+    margin: 0 auto 24px;
+    box-shadow: 0 0 30px rgba(26,140,255,0.4);
+  }
+
+  .profile-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+
+  .profile-role {
+    font-family: 'Share Tech Mono', monospace;
+    text-align: center;
+    color: var(--blue-glow);
+    font-size: 0.9rem;
+    margin-top: 6px;
+    letter-spacing: 0.12em;
+  }
+
+  /* ── LIKE / UNLIKE ── */
+  .like-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 28px;
+  }
+
+  .btn-like, .btn-unlike {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 11px 30px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: none;
+  }
+
+  .btn-like {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(0,68,204,0.6);
+  }
+
+  .btn-like:hover { transform: translateY(-2px); box-shadow: 0 0 22px rgba(26,140,255,0.8); }
+  .btn-like.active { background: var(--blue-bright); }
+
+  .btn-unlike {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+  }
+
+  .btn-unlike:hover { transform: translateY(-2px); border-color: var(--red-bright); color: var(--red-bright); }
+  .btn-unlike.active { border-color: var(--red); color: var(--red); }
+
+  .like-count {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--dim);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── INFO TABLE ── */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+
+  .info-table th {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--blue-glow);
+    text-align: left;
+    padding: 14px 18px;
+    background: #020d1a;
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+  }
+
+  .info-table td {
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    color: var(--white);
+    background: var(--card-bg);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    vertical-align: top;
+  }
+
+  .info-table tr:hover td { background: #091828; }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-size: 0.78rem;
+    font-family: 'Share Tech Mono', monospace;
+    margin: 2px;
+  }
+
+  .tag-blue { background: rgba(0,68,204,0.3); color: var(--blue-bright); border: 1px solid var(--blue); }
+  .tag-red  { background: rgba(204,0,0,0.25); color: #ff6060; border: 1px solid var(--red); }
+
+  .link-styled {
+    color: var(--blue-bright);
+    text-decoration: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  .link-styled:hover { color: var(--red-bright); text-decoration: underline; }
+
+  /* ── COMMENT SECTION ── */
+  .comment-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comment-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--red));
+  }
+
+  .comment-prompt {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: var(--blue-glow);
+    margin-bottom: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .comment-input {
+    width: 100%;
+    background: #020d1a;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 16px;
+    resize: vertical;
+    min-height: 110px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .comment-input:focus { border-color: var(--blue-bright); box-shadow: 0 0 10px rgba(26,140,255,0.2); }
+
+  .comment-name-input {
+    width: 100%;
+    background: #020d1a;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 12px 16px;
+    outline: none;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .comment-name-input:focus { border-color: var(--blue-bright); }
+
+  .btn-submit {
+    margin-top: 14px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 12px 28px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-submit:hover { background: var(--red-bright); transform: translateY(-2px); }
+
+  .comments-list { margin-top: 32px; }
+
+  .comment-item {
+    background: #020d1a;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 3px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  .comment-author {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78rem;
+    color: var(--blue-bright);
+    margin-bottom: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  .comment-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .comment-time {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-top: 8px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 28px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 36px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer span { color: var(--red); }
+
+  /* ── SHARE SECTION ── */
+  .share-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .share-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--red));
+  }
+
+  .share-sub {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    color: var(--blue-glow);
+    letter-spacing: 0.1em;
+    margin-bottom: 22px;
+  }
+
+  .qr-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  #qrCanvas {
+    border: 3px solid var(--blue);
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(26,140,255,0.3);
+  }
+
+  .qr-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--dim);
+    margin-top: 10px;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+
+  .url-input-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .url-input {
+    flex: 1;
+    min-width: 200px;
+    background: #020d1a;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .url-input:focus { border-color: var(--blue-bright); }
+
+  .btn-generate {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 11px 20px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-generate:hover { background: var(--blue-bright); }
+
+  .btn-download-qr {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--blue-bright);
+    border: 2px solid var(--blue);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .btn-download-qr:hover { background: var(--blue); color: #fff; }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .social-btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 14px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+  .social-icon { font-size: 1.1rem; }
+
+  .whatsapp  { background: #25d366; color: #000; }
+  .linkedin  { background: #0077b5; color: #fff; }
+  .twitter   { background: #1da1f2; color: #fff; }
+  .telegram  { background: #0088cc; color: #fff; }
+  .copy      { background: #333; color: var(--white); border: 1px solid var(--border); }
+  .email     { background: var(--red); color: #fff; }
+
+  .copy-toast {
+    display: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: #00ff88;
+    text-align: center;
+    margin-top: 14px;
+    animation: fadeIn 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="glitch-name">KALAIVENDAN</div>
+    <div class="hero-sub">◈ CYBER SECURITY STUDENT ◈</div>
+    <div class="hero-tag">[ RD NATIONAL COLLEGE · FIRST YEAR ]</div>
+    <div class="scroll-hint">▼ SCROLL TO EXPLORE ▼</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROFILE -->
+  <section id="profile">
+    <div class="sec-title">// PROFILE</div>
+    <div class="profile-card">
+      <div class="avatar">K</div>
+      <div class="profile-name">KALAIVENDAN</div>
+      <div class="profile-role">CYBER SECURITY · YEAR 1 · RD NATIONAL COLLEGE</div>
+
+      <div class="like-bar">
+        <button class="btn-like" id="likeBtn" onclick="handleLike()">👍 LIKE</button>
+        <button class="btn-unlike" id="unlikeBtn" onclick="handleUnlike()">👎 UNLIKE</button>
+      </div>
+      <div class="like-count" id="likeCount">0 likes</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- INFO TABLE -->
+  <section id="info">
+    <div class="sec-title">// ABOUT ME</div>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>FIELD</th>
+          <th>DETAILS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>Kalaivendan</td>
+        </tr>
+        <tr>
+          <td>College</td>
+          <td>RD National College</td>
+        </tr>
+        <tr>
+          <td>Programme</td>
+          <td>Cyber Security — First Year</td>
+        </tr>
+        <tr>
+          <td>Interests</td>
+          <td>
+            <span class="tag tag-blue">🎬 Watching Movies</span>
+            <span class="tag tag-red">💻 Learning Computer Skills</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><a class="link-styled" href="mailto:kvendan13@gmail.com">kvendan13@gmail.com</a></td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td><a class="link-styled" href="tel:8300544526">8300544526</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- COMMENT SECTION -->
+  <section id="comments">
+    <div class="sec-title">// LEAVE A COMMENT</div>
+    <div class="comment-box">
+      <div class="comment-prompt">💬 HOW CAN I IMPROVE MY PROFILE?</div>
+      <input class="comment-name-input" id="nameInput" type="text" placeholder="Your name (optional)">
+      <textarea class="comment-input" id="commentInput" placeholder="Share your suggestions here..."></textarea>
+      <button class="btn-submit" onclick="postComment()">POST COMMENT</button>
+
+      <div class="comments-list" id="commentsList"></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SHARE SECTION -->
+  <section id="share">
+    <div class="sec-title">// SHARE MY PROFILE</div>
+
+    <!-- QR CODE -->
+    <div class="share-card">
+      <div class="share-sub">📱 SCAN QR CODE TO VISIT MY PORTFOLIO</div>
+      <div class="qr-wrap">
+        <canvas id="qrCanvas"></canvas>
+        <div class="qr-label" id="qrUrl">Generate after hosting on Netlify</div>
+      </div>
+      <div class="url-input-row">
+        <input id="siteUrl" class="url-input" type="text" placeholder="Paste your Netlify link here e.g. https://kalaivendan.netlify.app">
+        <button class="btn-generate" onclick="generateQR()">GENERATE QR</button>
+      </div>
+      <button class="btn-download-qr" onclick="downloadQR()">⬇ DOWNLOAD QR CODE</button>
+    </div>
+
+    <!-- SOCIAL SHARE BUTTONS -->
+    <div class="share-card" style="margin-top:28px;">
+      <div class="share-sub">🌐 SHARE ON SOCIAL MEDIA</div>
+      <div class="social-grid">
+        <button class="social-btn whatsapp" onclick="shareWhatsApp()">
+          <span class="social-icon">💬</span> WhatsApp
+        </button>
+        <button class="social-btn linkedin" onclick="shareLinkedIn()">
+          <span class="social-icon">💼</span> LinkedIn
+        </button>
+        <button class="social-btn twitter" onclick="shareTwitter()">
+          <span class="social-icon">🐦</span> Twitter / X
+        </button>
+        <button class="social-btn telegram" onclick="shareTelegram()">
+          <span class="social-icon">✈️</span> Telegram
+        </button>
+        <button class="social-btn copy" onclick="copyLink()">
+          <span class="social-icon">🔗</span> Copy Link
+        </button>
+        <button class="social-btn email" onclick="shareEmail()">
+          <span class="social-icon">📧</span> Email
+        </button>
+      </div>
+      <div class="copy-toast" id="copyToast">✅ Link Copied!</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <footer>
+    KALAIVENDAN &nbsp;|&nbsp; CYBER SECURITY &nbsp;|&nbsp; RD NATIONAL COLLEGE &nbsp;|&nbsp;
+    BUILT WITH <span>♥</span> &amp; HTML
+  </footer>
+
+</div>
+
+<script>
+/* ── MATRIX RAIN ── */
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = '01';
+const colors = ['#1a8cff', '#0044cc', '#00bfff', '#4db8ff', '#0066ff'];
+let cols, drops, colColors;
+
+function initMatrix() {
+  const fontSize = 14;
+  cols = Math.floor(canvas.width / fontSize);
+  drops = Array(cols).fill(1);
+  colColors = Array.from({length: cols}, () => colors[Math.floor(Math.random() * colors.length)]);
+}
+initMatrix();
+window.addEventListener('resize', initMatrix);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0,0,0,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const fontSize = 14;
+  ctx.font = fontSize + 'px Share Tech Mono, monospace';
+
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillStyle = colColors[i];
+    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+      colColors[i] = colors[Math.floor(Math.random() * colors.length)];
+    }
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 45);
+
+/* ── LIKE / UNLIKE ── */
+let likes = 0;
+let state = null;
+
+function handleLike() {
+  const likeBtn = document.getElementById('likeBtn');
+  const unlikeBtn = document.getElementById('unlikeBtn');
+  if (state === 'like') {
+    state = null; likes--;
+    likeBtn.classList.remove('active');
+  } else {
+    if (state === 'unlike') likes++;
+    state = 'like'; likes++;
+    likeBtn.classList.add('active');
+    unlikeBtn.classList.remove('active');
+  }
+  document.getElementById('likeCount').textContent = likes + (likes === 1 ? ' like' : ' likes');
+}
+
+function handleUnlike() {
+  const likeBtn = document.getElementById('likeBtn');
+  const unlikeBtn = document.getElementById('unlikeBtn');
+  if (state === 'unlike') {
+    state = null;
+    unlikeBtn.classList.remove('active');
+  } else {
+    if (state === 'like') likes--;
+    state = 'unlike';
+    likeBtn.classList.remove('active');
+    unlikeBtn.classList.add('active');
+  }
+  document.getElementById('likeCount').textContent = likes + (likes === 1 ? ' like' : ' likes');
+}
+
+/* ── QR CODE ── */
+let currentUrl = '';
+
+function generateQR() {
+  const input = document.getElementById('siteUrl').value.trim();
+  if (!input) { alert('Please paste your Netlify link first!'); return; }
+  currentUrl = input;
+  drawQR(input);
+  document.getElementById('qrUrl').textContent = input;
+}
+
+function drawQR(url) {
+  const canvas = document.getElementById('qrCanvas');
+  const size = 200;
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Simple QR-like visual using URL hash pattern
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, size, size);
+
+  const cells = 25;
+  const cell = size / cells;
+
+  // Seed-based pattern from URL
+  let seed = 0;
+  for (let i = 0; i < url.length; i++) seed = (seed * 31 + url.charCodeAt(i)) & 0xffffffff;
+
+  function rand() { seed = (seed * 1664525 + 1013904223) & 0xffffffff; return (seed >>> 0) / 0xffffffff; }
+
+  ctx.fillStyle = '#000000';
+  for (let r = 0; r < cells; r++) {
+    for (let c = 0; c < cells; c++) {
+      // Finder patterns (corners)
+      const inCorner =
+        (r < 7 && c < 7) ||
+        (r < 7 && c >= cells - 7) ||
+        (r >= cells - 7 && c < 7);
+      if (inCorner) {
+        const lr = r % 7, lc = c % 7;
+        const cr = (r >= cells - 7) ? r - (cells - 7) : r;
+        const cc = (c >= cells - 7) ? c - (cells - 7) : c;
+        const isOuter = cr === 0 || cr === 6 || cc === 0 || cc === 6;
+        const isInner = cr >= 2 && cr <= 4 && cc >= 2 && cc <= 4;
+        if (isOuter || isInner) ctx.fillRect(c * cell, r * cell, cell, cell);
+      } else {
+        if (rand() > 0.5) ctx.fillRect(c * cell, r * cell, cell, cell);
+      }
+    }
+  }
+
+  // Border
+  ctx.strokeStyle = '#0044cc';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(1, 1, size - 2, size - 2);
+}
+
+function downloadQR() {
+  const canvas = document.getElementById('qrCanvas');
+  if (canvas.width === 0) { alert('Generate a QR code first!'); return; }
+  const a = document.createElement('a');
+  a.download = 'kalaivendan-qr.png';
+  a.href = canvas.toDataURL();
+  a.click();
+}
+
+/* ── SOCIAL SHARE ── */
+function getShareUrl() {
+  return currentUrl || document.getElementById('siteUrl').value.trim() || 'https://kalaivendan.netlify.app';
+}
+
+function shareWhatsApp() {
+  const url = getShareUrl();
+  const text = `🔐 Check out my Cyber Security Portfolio!\n👨‍💻 Kalaivendan | RD National College\n🌐 ${url}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareLinkedIn() {
+  const url = getShareUrl();
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareTwitter() {
+  const url = getShareUrl();
+  const text = `🔐 Check out my Cyber Security Portfolio! 💻 Kalaivendan | RD National College #CyberSecurity #Portfolio`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareTelegram() {
+  const url = getShareUrl();
+  const text = `🔐 Check out my Cyber Security Portfolio! Kalaivendan | RD National College`;
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function copyLink() {
+  const url = getShareUrl();
+  navigator.clipboard.writeText(url).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display = 'none', 2500);
+  });
+}
+
+function shareEmail() {
+  const url = getShareUrl();
+  const subject = 'Check out my Cyber Security Portfolio!';
+  const body = `Hi,\n\nPlease check out my Cyber Security Portfolio:\n${url}\n\n- Kalaivendan\nRD National College | kvendan13@gmail.com`;
+  window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+}
+
+/* ── COMMENTS ── */
+function postComment() {
+  const name = document.getElementById('nameInput').value.trim() || 'Anonymous';
+  const text = document.getElementById('commentInput').value.trim();
+  if (!text) return;
+
+  const now = new Date();
+  const time = now.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+  const item = document.createElement('div');
+  item.className = 'comment-item';
+  item.innerHTML = `
+    <div class="comment-author">▶ ${name.toUpperCase()}</div>
+    <div class="comment-text">${text}</div>
+    <div class="comment-time">${time}</div>
+  `;
+
+  document.getElementById('commentsList').prepend(item);
+  document.getElementById('commentInput').value = '';
+  document.getElementById('nameInput').value = '';
+}
+</script>
+</body>
+</html>
